@@ -1,0 +1,139 @@
+<div class="min-h-screen">
+  <!-- Mobile Header - Fixa -->
+  <div class="flex align-items-center justify-content-between p-3 md:hidden border-bottom-1 mobile-header-fixed mobile-header-themed">
+    <div class="flex align-items-center gap-2">
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-chart-line text-primary text-2xl"></i>
+        <span class="font-semibold text-xl">My Life</span>
+      </div>
+    </div>
+    <div class="flex align-items-center gap-2">
+      <!-- Theme Toggle Button -->
+      <p-button 
+        [icon]="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'"
+        (onClick)="toggleTheme()"
+        [text]="true"
+        [rounded]="true"
+        size="small">
+      </p-button>
+      
+      <p-button 
+        icon="pi pi-bars" 
+        (onClick)="sidebarVisible.set(true)"
+        [text]="true"
+        [rounded]="true">
+      </p-button>
+    </div>
+  </div>
+
+  <!-- Drawer for Mobile -->
+  <p-drawer 
+    [(visible)]="sidebarVisible" 
+    position="left"
+    [modal]="true"
+    styleClass="md:hidden sidebar-themed">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-chart-line text-primary text-2xl"></i>
+        <span class="font-semibold text-xl">My life</span>
+      </div>
+    </ng-template>
+    <div class="flex flex-column h-full">
+      <!-- Menu Principal -->
+      <div class="flex-1">
+        <p-menu [model]="menuItems" styleClass="w-full border-none"></p-menu>
+      </div>
+      
+      <!-- User Info na parte inferior -->
+      <div class="border-top-1 surface-border p-3" *ngIf="userDisplayName">
+        <div class="flex align-items-center justify-content-between">
+          <span class="font-semibold text-color text-sm">{{ userDisplayName }}</span>
+          <div class="flex gap-1">
+            <p-button 
+              icon="pi pi-cog"
+              [text]="true"
+              [rounded]="true"
+              size="small"
+              severity="secondary"
+              pTooltip="Configurações">
+            </p-button>
+            <p-button 
+              icon="pi pi-sign-out"
+              (onClick)="onLogout()"
+              [text]="true"
+              [rounded]="true"
+              size="small"
+              severity="secondary"
+              pTooltip="Sair">
+            </p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-drawer>
+
+  <!-- Desktop Layout -->
+  <div class="hidden md:block">
+    <!-- Desktop Sidebar - Fixa -->
+    <div class="w-16rem shadow-2 border-right-1 sidebar-themed sidebar-fixed">
+      <div class="p-3 border-bottom-1 sidebar-header-themed">
+        <div class="flex align-items-center justify-content-between">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-chart-line text-primary text-2xl"></i>
+            <span class="font-semibold text-xl">My Life</span>
+          </div>
+          <!-- Theme Toggle Button -->
+          <p-button 
+            [icon]="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'"
+            (onClick)="toggleTheme()"
+            [text]="true"
+            [rounded]="true"
+            size="small">
+          </p-button>
+        </div>
+      </div>
+      <div class="flex flex-column" style="height: calc(100vh - 80px);">
+        <!-- Menu Principal -->
+        <div class="flex-1 p-3 overflow-y-auto">
+          <p-menu [model]="menuItems" styleClass="w-full border-none"></p-menu>
+        </div>
+        
+        <!-- User Info na parte inferior -->
+        <div class="border-top-1 surface-border p-3" *ngIf="userDisplayName">
+          <div class="flex align-items-center justify-content-between">
+            <span class="font-semibold text-color text-sm">{{ userDisplayName }}</span>
+            <div class="flex gap-1">
+              <p-button 
+                icon="pi pi-cog"
+                [text]="true"
+                [rounded]="true"
+                size="small"
+                severity="secondary"
+                pTooltip="Configurações">
+              </p-button>
+              <p-button 
+                icon="pi pi-sign-out"
+                (onClick)="onLogout()"
+                [text]="true"
+                [rounded]="true"
+                size="small"
+                severity="secondary"
+                pTooltip="Sair">
+              </p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content - Com margem para compensar sidebar fixa -->
+    <div class="main-content-with-sidebar">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <!-- Mobile Content - Com padding-top para compensar header fixo -->
+  <div class="md:hidden mobile-content-with-header">
+    <router-outlet></router-outlet>
+  </div>
+</div>

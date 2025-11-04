@@ -1,0 +1,170 @@
+<div class="dashboard-container p-2">
+  <!-- Header -->
+  <div class="flex justify-content-between align-items-center mb-4">
+    <h1 class="text-3xl font-bold text-900 m-0">Banking Dashboard</h1>
+    <div class="flex align-items-center gap-3">
+      <span class="text-500">Your Balance</span>
+      <span class="text-3xl font-bold text-900">$72,842.00</span>
+    </div>
+  </div>
+
+  <!-- Balance Cards -->
+  <div class="grid mb-4">
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card styleClass="h-full">
+        <div class="flex justify-content-between align-items-start">
+          <div>
+            <div class="text-500 text-sm mb-2">Spend Limit</div>
+            <div class="text-2xl font-bold text-900">$100,000.00</div>
+          </div>
+          <div class="bg-blue-100 border-round p-2">
+            <i class="pi pi-credit-card text-blue-500 text-xl"></i>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card styleClass="h-full">
+        <div class="flex justify-content-between align-items-start">
+          <div>
+            <div class="text-500 text-sm mb-2">Currency</div>
+            <div class="text-2xl font-bold text-900">USD Dollar</div>
+          </div>
+          <div class="bg-green-100 border-round p-2">
+            <i class="pi pi-dollar text-green-500 text-xl"></i>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card styleClass="h-full">
+        <div class="flex justify-content-between align-items-start">
+          <div>
+            <div class="text-500 text-sm mb-2">Total Income</div>
+            <div class="text-2xl font-bold text-900">$125,420.50</div>
+          </div>
+          <div class="bg-cyan-100 border-round p-2">
+            <i class="pi pi-arrow-up text-cyan-500 text-xl"></i>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card styleClass="h-full">
+        <div class="flex justify-content-between align-items-start">
+          <div>
+            <div class="text-500 text-sm mb-2">Total Expenses</div>
+            <div class="text-2xl font-bold text-900">$52,578.50</div>
+          </div>
+          <div class="bg-orange-100 border-round p-2">
+            <i class="pi pi-arrow-down text-orange-500 text-xl"></i>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="grid mb-4">
+    <!-- Account History Chart -->
+    <div class="col-12 lg:col-8">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="flex justify-content-between align-items-center p-3">
+            <h3 class="text-xl font-semibold text-900 m-0">Account History</h3>
+            <p-button label="View All" [text]="true" size="small"></p-button>
+          </div>
+        </ng-template>
+        <div class="chart-placeholder bg-blue-50 border-round p-4 text-center">
+          <div class="mb-3">
+            <i class="pi pi-chart-bar text-6xl text-blue-300"></i>
+          </div>
+          <p class="text-blue-500 m-0">Chart placeholder - Account flow visualization</p>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Last Card Movements -->
+    <div class="col-12 lg:col-4">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="flex justify-content-between align-items-center p-3">
+            <h3 class="text-xl font-semibold text-900 m-0">Last Card Movements</h3>
+            <p-button label="View All" [text]="true" size="small"></p-button>
+          </div>
+        </ng-template>
+        <div class="movements-list">
+          <div *ngFor="let movement of cardMovements" 
+               class="flex align-items-center justify-content-between p-3 border-bottom-1 surface-border">
+            <div class="flex align-items-center gap-3">
+              <div class="flex align-items-center justify-content-center bg-{{ movement.iconColor }}-100 border-round" 
+                   style="width: 2.5rem; height: 2.5rem;">
+                <i class="pi pi-{{ movement.icon }} text-{{ movement.iconColor }}-500"></i>
+              </div>
+              <div>
+                <div class="font-medium text-900">{{ movement.company }}</div>
+                <div class="text-500 text-sm">{{ movement.date }}</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold" [class]="movement.amount.startsWith('-') ? 'text-red-500' : 'text-green-500'">
+                {{ movement.amount }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Account History Table -->
+  <div class="grid">
+    <div class="col-12">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="flex justify-content-between align-items-center p-3">
+            <h3 class="text-xl font-semibold text-900 m-0">Account History</h3>
+            <p-button label="View All" [text]="true" size="small"></p-button>
+          </div>
+        </ng-template>
+        <p-table [value]="accountHistory" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Account</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-transaction>
+            <tr>
+              <td>{{ transaction.name }}</td>
+              <td>{{ transaction.date }}</td>
+              <td>
+                <span [class]="transaction.amount.startsWith('+') ? 'text-green-500' : 'text-red-500'" 
+                      class="font-medium">
+                  {{ transaction.amount }}
+                </span>
+              </td>
+              <td>{{ transaction.account }}</td>
+              <td>
+                <p-button icon="pi pi-ellipsis-h" [text]="true" [rounded]="true" size="small"></p-button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Task List Section -->
+  <div class="grid mb-4">
+    <div class="col-12">
+      <app-dashboard-task></app-dashboard-task>
+    </div>
+  </div>
+</div>

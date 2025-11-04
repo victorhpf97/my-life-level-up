@@ -1,0 +1,96 @@
+<div class="tasks-container p-4">
+  <h1 class="text-3xl font-bold text-900 mb-4">Tasks Management</h1>
+  
+  <div class="grid">
+    <div class="col-12 md:col-4">
+      <div class="surface-card border-round-2xl shadow-2 p-4">
+        <div class="text-900 text-3xl font-semibold mb-3">Tasks</div>
+
+        <ng-container *ngFor="let t of tasks; let last = last">
+          <div class="flex align-items-center justify-content-between py-3">
+            <div class="text-900 text-xl font-medium">{{ t.name }}</div>
+
+            <div class="flex align-items-center gap-3">
+              <div class="text-900 text-xl font-semibold tabular-nums">
+                {{ formatTime(getRemainingSeconds(t)) }}
+              </div>
+
+              <button pButton type="button" class="p-button-rounded p-button-lg"
+                [icon]="t.running ? 'pi pi-pause' : 'pi pi-play'" (click)="toggle(t)">
+              </button>
+            </div>
+          </div>
+
+          <p-progressBar 
+            [value]="getProgress(t)"
+            [showValue]="false"
+            class="w-full border-round-xl mb-3">
+          </p-progressBar>
+
+          <p-divider *ngIf="!last" class="my-2"></p-divider>
+        </ng-container>
+      </div>
+    </div>
+    
+    <div class="col-12 md:col-1"></div>
+    
+    <div class="col-12 md:col-6">
+      <h1 class="text-center">🚀 Semana 1</h1>
+      <p-accordion [value]="['0']">
+        <p-accordion-panel value="1">
+          <p-accordion-header>Terça-Feira</p-accordion-header>
+          <p-accordion-content>
+            <div class="flex flex-column align-items-center text-center gap-2">
+              <h6 class="text-900 text-lg font-bold">
+                ⚙️ 1- Projeto Front-end Atualizado
+              </h6>
+
+              <p class="m-0 line-height-3 text-700">
+                🚀 Front-end recriado utilizando a versão mais recente do Angular e PrimeNG.
+                Isso garante mais estabilidade, menos bugs e uma manutenção muito mais simples no futuro.
+              </p>
+            </div>
+
+            <div class="flex flex-column align-items-center text-center gap-2">
+              <h6 class="text-900 text-lg font-bold">
+                ⏱️ 2- Lógica do Timer no Front-end
+              </h6>
+
+              <p class="m-0 line-height-3 text-700">
+                💡 Sistema de timer dinâmico implementado diretamente no front-end.
+                Será utilizado para gerenciar o meu próprio tempo em atividades como:
+                🎧 Treinar Listening
+                💻 Codar o SaaS
+                📬 Aplicar para vagas e posso replicar para as tasks no futuro, em resumo a logica já está pronta
+              </p>
+            </div>
+
+            <div class="flex flex-column align-items-center text-center gap-2">
+              <h6 class="text-900 text-lg font-bold">
+                🧩 3- Entidade de Timer no Back-end
+              </h6>
+
+              <p class="m-0 line-height-3 text-700">
+                🗄️ Entidade dedicada ao Timer criada no back-end, permitindo salvar, consultar e acompanhar o progresso
+                de cada atividade com precisão.plicar para vagas e posso replicar para as tasks no futuro, em resumo a
+                logica já está pronta
+              </p>
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+     
+        <p-accordion-panel value="2" [disabled]="true">
+          <p-accordion-header>Quarta-feira</p-accordion-header>
+        </p-accordion-panel>
+
+         <p-accordion-panel value="3" [disabled]="true">
+          <p-accordion-header>Quinta-feira</p-accordion-header>
+        </p-accordion-panel>
+
+         <p-accordion-panel value="4" [disabled]="true">
+          <p-accordion-header>Sexta-feira</p-accordion-header>
+        </p-accordion-panel>
+      </p-accordion>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,133 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles - Only PrimeNG and PrimeFlex imports */
 @import "primeicons/primeicons.css";
 
+/* CSS Custom Properties para Temas */
+:root {
+  /* Tema padrão (claro) */
+  --app-sidebar-bg: #ffffff;
+  --app-sidebar-text: #1f2937;
+  --app-sidebar-border: #e5e7eb;
+  --app-sidebar-header-bg: #ffffff;
+  --app-sidebar-item-hover: #f3f4f6;
+  --app-sidebar-item-active: #3b82f6;
+  --app-sidebar-item-active-text: #ffffff;
+  
+  /* Mobile header - mesmas variáveis da sidebar */
+  --app-mobile-header-bg: #ffffff;
+  --app-mobile-header-text: #1f2937;
+  --app-mobile-header-border: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  /* Tema escuro */
+  --app-sidebar-bg: #020202f2;
+  --app-sidebar-text: #f9fafb;
+  --app-sidebar-border: #374151;
+  --app-sidebar-header-bg: #020202f2;
+  --app-sidebar-item-hover: #374151;
+  --app-sidebar-item-active: #3b82f6;
+  --app-sidebar-item-active-text: #ffffff;
+  
+  /* Mobile header - mesmas variáveis da sidebar */
+  --app-mobile-header-bg: #020202f2;
+  --app-mobile-header-text: #f9fafb;
+  --app-mobile-header-border: #374151;
+}
+
+/* Classes para aplicar o tema na sidebar */
+.sidebar-themed {
+  background-color: var(--app-sidebar-bg) !important;
+  color: var(--app-sidebar-text) !important;
+  border-color: var(--app-sidebar-border) !important;
+}
+
+.sidebar-header-themed {
+  background-color: var(--app-sidebar-header-bg) !important;
+  color: var(--app-sidebar-text) !important;
+  border-color: var(--app-sidebar-border) !important;
+}
+
+/* Sidebar fixa que não rola com a página */
+.sidebar-fixed {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  z-index: 1000 !important;
+}
+
+/* Ajustar conteúdo principal para compensar sidebar fixa */
+.main-content-with-sidebar {
+  margin-left: 16rem !important; /* 16rem = w-16rem da sidebar */
+}
+
+/* Override para o menu do PrimeNG */
+.sidebar-themed .p-menu {
+  background: transparent !important;
+  border: none !important;
+  color: var(--app-sidebar-text) !important;
+}
+
+.sidebar-themed .p-menu .p-menuitem-link {
+//   color: var(--app-sidebar-text) !important;
+  color: white !important;
+
+  border-radius: 6px;
+  margin: 2px 0;
+}
+
+
+.sidebar-themed .p-menu .p-menu-item-link-active {
+//   color: var(--app-sidebar-text) !important;
+  color: white !important;
+
+  border-radius: 6px;
+  margin: 2px 0;
+}
+
+
+.sidebar-themed .p-menu .p-menuitem-link:hover {
+  background-color: var(--app-sidebar-item-hover) !important;
+  color: var(--app-sidebar-text) !important;
+}
+
+.sidebar-themed .p-menu .p-menuitem-link:focus {
+  background-color: var(--app-sidebar-item-active) !important;
+  color: var(--app-sidebar-item-active-text) !important;
+}
+
+.sidebar-themed .p-menu .p-submenu-header {
+  color: var(--app-sidebar-text) !important;
+  background: transparent !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
 
 body {
- 
-    background-color: #fbfafb
+  background-color: #e2e9f6;
+}
+
+/* Mobile header fixo */
+.mobile-header-fixed {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1001 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Tema para mobile header */
+.mobile-header-themed {
+  background-color: var(--app-mobile-header-bg) !important;
+  color: var(--app-mobile-header-text) !important;
+  border-color: var(--app-mobile-header-border) !important;
+}
+
+/* Compensar altura do header mobile fixo */
+.mobile-content-with-header {
+  padding-top: 4.5rem !important; /* ~72px para compensar o header */
 }

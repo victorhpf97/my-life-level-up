@@ -1,0 +1,89 @@
+<p-drawer 
+  [(visible)]="visible" 
+  position="right"
+  [modal]="true"
+  styleClass="w-full md:w-30rem"
+  (onHide)="onSidebarHide()">
+  
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center gap-2">
+      <i class="pi pi-pencil text-primary"></i>
+      <span class="font-semibold text-lg">Edit Task</span>
+    </div>
+  </ng-template>
+
+  <div class="flex flex-column gap-4 p-4">
+    <!-- Task Title -->
+    <div class="flex flex-column gap-2">
+      <label class="font-medium text-900">Title</label>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="editTitle"
+        placeholder="Enter task title"
+        class="w-full">
+    </div>
+
+    <!-- Task Description -->
+    <div class="flex flex-column gap-2">
+      <label class="font-medium text-900">Description</label>
+      <textarea 
+        [(ngModel)]="editDescription"
+        placeholder="Enter task description"
+        rows="3"
+        class="w-full border-1 surface-border border-round p-2">
+      </textarea>
+    </div>
+
+    <!-- Priority -->
+    <div class="flex flex-column gap-2">
+      <label class="font-medium text-900">Priority</label>
+      <p-select 
+        [(ngModel)]="editPriority"
+        [options]="priorityOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select Priority"
+        styleClass="w-full">
+        <ng-template pTemplate="selectedItem">
+          <div class="flex align-items-center gap-2" *ngIf="editPriority">
+            <span class="text-sm">{{ getPriorityLabelFromValue(editPriority) }}</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-option>
+          <div class="flex align-items-center gap-2">
+            <span class="text-sm">{{ option.label }}</span>
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-column gap-2 mt-4">
+      <p-button 
+        label="Save Changes" 
+        icon="pi pi-check"
+        (onClick)="onSave()"
+        [disabled]="!editTitle.trim()"
+        styleClass="w-full">
+      </p-button>
+      
+      <p-button 
+        label="Cancel" 
+        icon="pi pi-times"
+        (onClick)="onCancel()"
+        severity="secondary"
+        styleClass="w-full">
+      </p-button>
+      
+      <p-button 
+        label="Delete Task" 
+        icon="pi pi-trash"
+        (onClick)="onDelete()"
+        severity="danger"
+        [outlined]="true"
+        styleClass="w-full mt-2">
+      </p-button>
+    </div>
+  </div>
+</p-drawer>
