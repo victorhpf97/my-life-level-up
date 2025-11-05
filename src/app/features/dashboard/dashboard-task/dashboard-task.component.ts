@@ -54,7 +54,7 @@ export class DashboardTaskComponent {
       priority: 'high',
       completed: false,
       type: 'timer',
-      imageUrl: 'assets/box.png',
+      imageUrl: 'assets/img/box.png',
       duration: 60, // 1 hora
       timeRemaining: 3600, // 60 * 60 segundos
       isRunning: false,
@@ -67,7 +67,7 @@ export class DashboardTaskComponent {
       priority: 'medium',
       completed: false,
       type: 'checkbox',
-      imageUrl: 'assets/aku aku.png'
+      imageUrl: 'assets/img/aku aku.png'
     },
     {
       id: 3,
@@ -76,7 +76,7 @@ export class DashboardTaskComponent {
       priority: 'medium',
       completed: false,
       type: 'timer',
-      imageUrl: 'assets/aku aku.png',
+      imageUrl: 'assets/img/aku aku.png',
       duration: 15, // 15 minutos
       timeRemaining: 900, // 15 * 60 segundos
       isRunning: false,
@@ -89,7 +89,7 @@ export class DashboardTaskComponent {
       priority: 'medium',
       completed: false,
       type: 'checkbox',
-      imageUrl: 'assets/box.png',
+      imageUrl: 'assets/img/box.png',
 
     },
     {
@@ -99,7 +99,7 @@ export class DashboardTaskComponent {
       priority: 'high',
       completed: false,
       type: 'timer',
-      imageUrl: 'assets/box.png',
+      imageUrl: 'assets/img/box.png',
       duration: 45, // 45 minutos
       timeRemaining: 2700, // 45 * 60 segundos
       isRunning: false,
@@ -112,7 +112,7 @@ export class DashboardTaskComponent {
       priority: 'low',
       completed: false,
       type: 'checkbox',
-      imageUrl: 'assets/box.png'
+      imageUrl: 'assets/img/box.png'
     },
     {
       id: 7,
@@ -121,7 +121,7 @@ export class DashboardTaskComponent {
       priority: 'medium',
       completed: true,
       type: 'checkbox',
-      imageUrl: 'assets/box.png',
+      imageUrl: 'assets/img/box.png',
 
     },
     {
@@ -131,7 +131,7 @@ export class DashboardTaskComponent {
       priority: 'low',
       completed: true,
       type: 'checkbox',
-      imageUrl: 'assets/box.png'
+      imageUrl: 'assets/img/box.png'
     },
     {
       id: 9,
@@ -140,7 +140,7 @@ export class DashboardTaskComponent {
       priority: 'high',
       completed: true,
       type: 'checkbox',
-      imageUrl: 'assets/box.png',
+      imageUrl: 'assets/img/box.png',
 
     }
   ];
