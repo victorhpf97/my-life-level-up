@@ -156,6 +156,28 @@ export class DashboardTaskComponent {
   toggleTaskCompletion(task: Task): void {
     if (task.type === 'checkbox') {
       task.completed = !task.completed;
+      
+      // Se a task foi completada, reproduzir som baseado na imagem
+      if (task.completed) {
+        this.playCompletionSound(task);
+      }
+    }
+  }
+
+  playCompletionSound(task: Task): void {
+    let audioFile = '';
+    
+    if (task.imageUrl?.includes('aku aku.png')) {
+      audioFile = 'assets/audio/Aku aku sound.mp3';
+    } else if (task.imageUrl?.includes('box.png')) {
+      audioFile = 'assets/audio/apple-sound.mp3';
+    }
+    
+    if (audioFile) {
+      const audio = new Audio(audioFile);
+      audio.play().catch(error => {
+        console.log('Erro ao reproduzir áudio:', error);
+      });
     }
   }
 
@@ -205,6 +227,10 @@ export class DashboardTaskComponent {
     task.completed = true;
     task.isRunning = false;
     task.isPaused = false;
+    
+    // Reproduzir som de conclusão
+    this.playCompletionSound(task);
+    
     // Aqui você pode adicionar notificação/som
     console.log(`Task "${task.title}" completada!`);
   }
