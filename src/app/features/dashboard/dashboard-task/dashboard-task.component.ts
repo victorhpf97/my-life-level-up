@@ -17,6 +17,7 @@ interface Task {
   priority: 'low' | 'medium' | 'high';
   completed: boolean;
   type: 'checkbox' | 'timer';
+  imageUrl?: string;
   duration?: number; // em minutos
   timeRemaining?: number; // em segundos
   isRunning?: boolean;
@@ -53,6 +54,7 @@ export class DashboardTaskComponent {
       priority: 'high',
       completed: false,
       type: 'timer',
+      imageUrl: 'assets/box.png',
       duration: 60, // 1 hora
       timeRemaining: 3600, // 60 * 60 segundos
       isRunning: false,
@@ -64,7 +66,8 @@ export class DashboardTaskComponent {
       description: 'Build analytics dashboard with charts',
       priority: 'medium',
       completed: false,
-      type: 'checkbox'
+      type: 'checkbox',
+      imageUrl: 'assets/aku aku.png'
     },
     {
       id: 3,
@@ -73,6 +76,7 @@ export class DashboardTaskComponent {
       priority: 'medium',
       completed: false,
       type: 'timer',
+      imageUrl: 'assets/aku aku.png',
       duration: 15, // 15 minutos
       timeRemaining: 900, // 15 * 60 segundos
       isRunning: false,
@@ -84,7 +88,9 @@ export class DashboardTaskComponent {
       description: 'Complete user interface components',
       priority: 'medium',
       completed: false,
-      type: 'checkbox'
+      type: 'checkbox',
+      imageUrl: 'assets/box.png',
+
     },
     {
       id: 5,
@@ -93,6 +99,7 @@ export class DashboardTaskComponent {
       priority: 'high',
       completed: false,
       type: 'timer',
+      imageUrl: 'assets/box.png',
       duration: 45, // 45 minutos
       timeRemaining: 2700, // 45 * 60 segundos
       isRunning: false,
@@ -104,7 +111,8 @@ export class DashboardTaskComponent {
       description: 'Responsive mobile application design',
       priority: 'low',
       completed: false,
-      type: 'checkbox'
+      type: 'checkbox',
+      imageUrl: 'assets/box.png'
     },
     {
       id: 7,
@@ -112,7 +120,9 @@ export class DashboardTaskComponent {
       description: 'Launch comprehensive marketing campaign',
       priority: 'medium',
       completed: true,
-      type: 'checkbox'
+      type: 'checkbox',
+      imageUrl: 'assets/box.png',
+
     },
     {
       id: 8,
@@ -120,7 +130,8 @@ export class DashboardTaskComponent {
       description: 'Review team performance and metrics',
       priority: 'low',
       completed: true,
-      type: 'checkbox'
+      type: 'checkbox',
+      imageUrl: 'assets/box.png'
     },
     {
       id: 9,
@@ -128,7 +139,9 @@ export class DashboardTaskComponent {
       description: 'Design consistent icon library',
       priority: 'high',
       completed: true,
-      type: 'checkbox'
+      type: 'checkbox',
+      imageUrl: 'assets/box.png',
+
     }
   ];
 

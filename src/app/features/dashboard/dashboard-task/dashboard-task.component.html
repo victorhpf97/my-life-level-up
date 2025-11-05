@@ -34,26 +34,49 @@
                 styleClass="mt-1 sm:mt-0">
               </p-checkbox>
               
-              <!-- Timer display para tasks de tempo -->
+              <!-- Timer controls para tasks de tempo -->
               <div *ngIf="task.type === 'timer'" class="flex align-items-center gap-2 mt-1 sm:mt-0">
-                <p-progressSpinner 
-                  *ngIf="task.isRunning"
-                  [style]="{'width': '24px', 'height': '24px'}"
-                  strokeWidth="4">
-                </p-progressSpinner>
+                <!-- Play/Pause button -->
+                <p-button 
+                  *ngIf="!task.isRunning && !task.completed"
+                  icon="pi pi-play"
+                  [text]="true"
+                  size="small"
+                  severity="success"
+                  (onClick)="startTimer(task); $event.stopPropagation()"
+                  pTooltip="Iniciar Timer"
+                  styleClass="p-0">
+                </p-button>
+                
+                <p-button 
+                  *ngIf="task.isRunning && !task.completed"
+                  icon="pi pi-pause"
+                  [text]="true"
+                  size="small"
+                  severity="warn"
+                  (onClick)="pauseTimer(task); $event.stopPropagation()"
+                  pTooltip="Pausar Timer"
+                  styleClass="p-0">
+                </p-button>
+                
+                <!-- Status indicator -->
                 <div 
-                  *ngIf="!task.isRunning"
-                  class="w-1rem h-1rem border-circle border-2 border-primary flex align-items-center justify-content-center"
-                  [style.background-color]="task.completed ? 'var(--primary-color)' : 'transparent'">
-                  <i 
-                    *ngIf="task.completed" 
-                    class="pi pi-check text-xs text-white">
-                  </i>
+                  *ngIf="task.completed"
+                  class="w-1rem h-1rem border-circle bg-green-500 flex align-items-center justify-content-center">
+                  <i class="pi pi-check text-xs text-white"></i>
                 </div>
               </div>
               
               <div class="flex flex-column flex-1">
-                <span class="text-900 font-medium mb-1">{{ task.title }}</span>
+                <div class="flex align-items-center gap-2 mb-1">
+                  <!-- Priority Badge na frente do nome -->
+                  <p-tag 
+                    [value]="getPriorityLabel(task.priority)"
+                    [severity]="getPrioritySeverity(task.priority)"
+                    styleClass="text-xs">
+                  </p-tag>
+                  <span class="text-900 font-medium">{{ task.title }}</span>
+                </div>
                 <span class="text-600 text-sm">{{ task.description }}</span>
                 
                 <!-- Timer info -->
@@ -76,59 +99,24 @@
             </div>
 
             <div class="flex flex-row sm:flex-row align-items-center justify-content-between gap-2 sm:gap-3 w-full sm:w-auto">
-              <!-- Timer Controls -->
-              <div *ngIf="task.type === 'timer' && !task.completed" class="flex gap-1 mr-2">
-                <p-button 
-                  *ngIf="!task.isRunning && !task.isPaused"
-                  icon="pi pi-play"
-                  [text]="true"
-                  size="small"
-                  severity="success"
-                  (onClick)="startTimer(task)"
-                  pTooltip="Iniciar"
-                  styleClass="p-button-rounded">
-                </p-button>
-                
-                <p-button 
-                  *ngIf="task.isRunning"
-                  icon="pi pi-pause"
-                  [text]="true"
-                  size="small"
-                  severity="secondary"
-                  (onClick)="pauseTimer(task)"
-                  pTooltip="Pausar"
-                  styleClass="p-button-rounded">
-                </p-button>
-                
-                <p-button 
-                  *ngIf="task.isPaused"
-                  icon="pi pi-play"
-                  [text]="true"
-                  size="small"
-                  severity="success"
-                  (onClick)="startTimer(task)"
-                  pTooltip="Continuar"
-                  styleClass="p-button-rounded">
-                </p-button>
-                
-                <p-button 
-                  *ngIf="task.isRunning || task.isPaused"
-                  icon="pi pi-refresh"
-                  [text]="true"
-                  size="small"
-                  severity="secondary"
-                  (onClick)="resetTimer(task)"
-                  pTooltip="Resetar"
-                  styleClass="p-button-rounded">
-                </p-button>
-              </div>
+              <!-- Reset button para timer -->
+              <p-button 
+                *ngIf="task.type === 'timer' && !task.completed"
+                icon="pi pi-refresh"
+                [text]="true"
+                size="small"
+                severity="secondary"
+                (onClick)="resetTimer(task); $event.stopPropagation()"
+                pTooltip="Resetar Timer"
+                styleClass="p-button-rounded">
+              </p-button>
               
-              <!-- Priority Badge - largura quase total no mobile -->
-              <p-tag 
-                [value]="getPriorityLabel(task.priority)"
-                [severity]="getPrioritySeverity(task.priority)"
-                styleClass="text-xs flex-1 sm:flex-none">
-              </p-tag>
+              <!-- Imagem da caixa no lugar do badge -->
+              <img 
+                [src]="task.imageUrl" 
+                alt="Caixa" 
+                class="border-round hidden sm:block"
+                style="height: 45px; object-fit: cover;">
 
               <!-- Menu Button - fixo no canto direito -->
               <p-button 
