@@ -5,6 +5,9 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TooltipModule } from 'primeng/tooltip';
 import { TaskEditSidebarComponent } from '../task-edit-sidebar/task-edit-sidebar.component';
 
 interface Task {
@@ -13,6 +16,11 @@ interface Task {
   description: string;
   priority: 'low' | 'medium' | 'high';
   completed: boolean;
+  type: 'checkbox' | 'timer';
+  duration?: number; // em minutos
+  timeRemaining?: number; // em segundos
+  isRunning?: boolean;
+  isPaused?: boolean;
 }
 
 @Component({
@@ -25,6 +33,9 @@ interface Task {
     CheckboxModule,
     FormsModule,
     TagModule,
+    ProgressBarModule,
+    ProgressSpinnerModule,
+    TooltipModule,
     TaskEditSidebarComponent
   ],
   templateUrl: './dashboard-task.component.html'
@@ -37,66 +48,87 @@ export class DashboardTaskComponent {
   tasks: Task[] = [
     {
       id: 1,
-      title: 'Create a New Landing UI',
-      description: 'Design modern and responsive landing page',
+      title: 'Estudar Inglês',
+      description: 'Praticar conversação e vocabulário',
       priority: 'high',
-      completed: false
+      completed: false,
+      type: 'timer',
+      duration: 60, // 1 hora
+      timeRemaining: 3600, // 60 * 60 segundos
+      isRunning: false,
+      isPaused: false
     },
     {
       id: 2,
       title: 'Create Dashboard',
       description: 'Build analytics dashboard with charts',
       priority: 'medium',
-      completed: false
+      completed: false,
+      type: 'checkbox'
     },
     {
       id: 3,
-      title: 'Brand logo design',
-      description: 'Design new company logo and branding',
-      priority: 'low',
-      completed: false
+      title: 'Meditação',
+      description: 'Sessão de mindfulness',
+      priority: 'medium',
+      completed: false,
+      type: 'timer',
+      duration: 15, // 15 minutos
+      timeRemaining: 900, // 15 * 60 segundos
+      isRunning: false,
+      isPaused: false
     },
     {
       id: 4,
       title: 'Create Dashboard',
       description: 'Complete user interface components',
       priority: 'medium',
-      completed: false
+      completed: false,
+      type: 'checkbox'
     },
     {
       id: 5,
-      title: 'Rebranding For Peak',
-      description: 'Update visual identity and guidelines',
+      title: 'Exercícios',
+      description: 'Treino de força e cardio',
       priority: 'high',
-      completed: false
+      completed: false,
+      type: 'timer',
+      duration: 45, // 45 minutos
+      timeRemaining: 2700, // 45 * 60 segundos
+      isRunning: false,
+      isPaused: false
     },
     {
       id: 6,
       title: 'Create Mobile UI',
       description: 'Responsive mobile application design',
       priority: 'low',
-      completed: false
+      completed: false,
+      type: 'checkbox'
     },
     {
       id: 7,
       title: 'Create a New Marketing Project',
       description: 'Launch comprehensive marketing campaign',
       priority: 'medium',
-      completed: true
+      completed: true,
+      type: 'checkbox'
     },
     {
       id: 8,
       title: 'Analyze New Sprint',
       description: 'Review team performance and metrics',
       priority: 'low',
-      completed: true
+      completed: true,
+      type: 'checkbox'
     },
     {
       id: 9,
       title: 'Create New Icon Set',
       description: 'Design consistent icon library',
       priority: 'high',
-      completed: true
+      completed: true,
+      type: 'checkbox'
     }
   ];
 
@@ -109,7 +141,9 @@ export class DashboardTaskComponent {
   }
 
   toggleTaskCompletion(task: Task): void {
-    task.completed = !task.completed;
+    if (task.type === 'checkbox') {
+      task.completed = !task.completed;
+    }
   }
 
   createNewTask(): void {
@@ -118,9 +152,66 @@ export class DashboardTaskComponent {
       title: 'New Task',
       description: 'Task description',
       priority: 'low',
-      completed: false
+      completed: false,
+      type: 'checkbox'
     };
     this.tasks.push(newTask);
+  }
+
+  // Timer Methods
+  startTimer(task: Task): void {
+    if (task.type !== 'timer') return;
+    
+    task.isRunning = true;
+    task.isPaused = false;
+    
+    const interval = setInterval(() => {
+      if (task.timeRemaining! > 0 && task.isRunning) {
+        task.timeRemaining!--;
+      } else {
+        clearInterval(interval);
+        if (task.timeRemaining === 0) {
+          this.completeTimerTask(task);
+        }
+      }
+    }, 1000);
+  }
+
+  pauseTimer(task: Task): void {
+    task.isRunning = false;
+    task.isPaused = true;
+  }
+
+  resetTimer(task: Task): void {
+    task.isRunning = false;
+    task.isPaused = false;
+    task.timeRemaining = (task.duration || 0) * 60; // Reset to original duration
+  }
+
+  completeTimerTask(task: Task): void {
+    task.completed = true;
+    task.isRunning = false;
+    task.isPaused = false;
+    // Aqui você pode adicionar notificação/som
+    console.log(`Task "${task.title}" completada!`);
+  }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    
+    if (hours > 0) {
+      return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    return `${minutes}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  getTimerProgress(task: Task): number {
+    if (!task.duration || !task.timeRemaining) return 0;
+    const totalSeconds = task.duration * 60;
+    const elapsedSeconds = totalSeconds - task.timeRemaining;
+    return (elapsedSeconds / totalSeconds) * 100;
   }
 
   openEditSidebar(task: Task): void {

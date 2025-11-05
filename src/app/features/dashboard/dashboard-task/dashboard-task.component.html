@@ -25,20 +25,104 @@
             [class.surface-border]="!last">
             
             <div class="flex align-items-start sm:align-items-center gap-3 flex-1">
+              <!-- Checkbox para tasks normais -->
               <p-checkbox 
+                *ngIf="task.type === 'checkbox'"
                 [binary]="true"
                 [ngModel]="task.completed"
                 (ngModelChange)="toggleTaskCompletion(task)"
                 styleClass="mt-1 sm:mt-0">
               </p-checkbox>
               
+              <!-- Timer display para tasks de tempo -->
+              <div *ngIf="task.type === 'timer'" class="flex align-items-center gap-2 mt-1 sm:mt-0">
+                <p-progressSpinner 
+                  *ngIf="task.isRunning"
+                  [style]="{'width': '24px', 'height': '24px'}"
+                  strokeWidth="4">
+                </p-progressSpinner>
+                <div 
+                  *ngIf="!task.isRunning"
+                  class="w-1rem h-1rem border-circle border-2 border-primary flex align-items-center justify-content-center"
+                  [style.background-color]="task.completed ? 'var(--primary-color)' : 'transparent'">
+                  <i 
+                    *ngIf="task.completed" 
+                    class="pi pi-check text-xs text-white">
+                  </i>
+                </div>
+              </div>
+              
               <div class="flex flex-column flex-1">
                 <span class="text-900 font-medium mb-1">{{ task.title }}</span>
                 <span class="text-600 text-sm">{{ task.description }}</span>
+                
+                <!-- Timer info -->
+                <div *ngIf="task.type === 'timer'" class="flex align-items-center gap-2 mt-2">
+                  <span class="text-primary font-mono text-sm">
+                    {{ formatTime(task.timeRemaining || 0) }}
+                  </span>
+                  <div class="flex-1">
+                    <p-progressBar 
+                      [value]="getTimerProgress(task)"
+                      [style]="{'height': '4px'}"
+                      [showValue]="false">
+                    </p-progressBar>
+                  </div>
+                  <span class="text-xs text-500">
+                    {{ task.duration }}min
+                  </span>
+                </div>
               </div>
             </div>
 
             <div class="flex flex-row sm:flex-row align-items-center justify-content-between gap-2 sm:gap-3 w-full sm:w-auto">
+              <!-- Timer Controls -->
+              <div *ngIf="task.type === 'timer' && !task.completed" class="flex gap-1 mr-2">
+                <p-button 
+                  *ngIf="!task.isRunning && !task.isPaused"
+                  icon="pi pi-play"
+                  [text]="true"
+                  size="small"
+                  severity="success"
+                  (onClick)="startTimer(task)"
+                  pTooltip="Iniciar"
+                  styleClass="p-button-rounded">
+                </p-button>
+                
+                <p-button 
+                  *ngIf="task.isRunning"
+                  icon="pi pi-pause"
+                  [text]="true"
+                  size="small"
+                  severity="secondary"
+                  (onClick)="pauseTimer(task)"
+                  pTooltip="Pausar"
+                  styleClass="p-button-rounded">
+                </p-button>
+                
+                <p-button 
+                  *ngIf="task.isPaused"
+                  icon="pi pi-play"
+                  [text]="true"
+                  size="small"
+                  severity="success"
+                  (onClick)="startTimer(task)"
+                  pTooltip="Continuar"
+                  styleClass="p-button-rounded">
+                </p-button>
+                
+                <p-button 
+                  *ngIf="task.isRunning || task.isPaused"
+                  icon="pi pi-refresh"
+                  [text]="true"
+                  size="small"
+                  severity="secondary"
+                  (onClick)="resetTimer(task)"
+                  pTooltip="Resetar"
+                  styleClass="p-button-rounded">
+                </p-button>
+              </div>
+              
               <!-- Priority Badge - largura quase total no mobile -->
               <p-tag 
                 [value]="getPriorityLabel(task.priority)"

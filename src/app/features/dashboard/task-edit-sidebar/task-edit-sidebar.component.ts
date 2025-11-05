@@ -12,6 +12,11 @@ interface Task {
   description: string;
   priority: 'low' | 'medium' | 'high';
   completed: boolean;
+  type: 'checkbox' | 'timer';
+  duration?: number; // em minutos
+  timeRemaining?: number; // em segundos
+  isRunning?: boolean;
+  isPaused?: boolean;
 }
 
 interface PriorityOption {
