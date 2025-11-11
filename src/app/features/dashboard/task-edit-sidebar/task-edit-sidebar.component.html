@@ -58,6 +58,38 @@
       </p-select>
     </div>
 
+    <!-- Task Type -->
+    <div class="flex flex-column gap-2">
+      <label class="font-medium text-900">Task Type</label>
+      <div class="flex flex-column gap-3">
+        <div class="flex align-items-center gap-2" *ngFor="let option of taskTypeOptions">
+          <p-radioButton 
+            [inputId]="option.value"
+            [(ngModel)]="editType"
+            [value]="option.value">
+          </p-radioButton>
+          <label [for]="option.value" class="flex align-items-center gap-2 cursor-pointer">
+            <i [class]="'pi ' + option.icon"></i>
+            <span>{{ option.label }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Duration (only for timer tasks) -->
+    <div class="flex flex-column gap-2" *ngIf="editType === 'timer'">
+      <label class="font-medium text-900">Duration (minutes)</label>
+      <p-inputNumber 
+        [(ngModel)]="editDuration"
+        [min]="1"
+        [max]="480"
+        suffix=" min"
+        placeholder="Enter duration"
+        styleClass="w-full">
+      </p-inputNumber>
+      <small class="text-600">Duration between 1 and 480 minutes (8 hours)</small>
+    </div>
+
     <!-- Action Buttons -->
     <div class="flex flex-column gap-2 mt-4">
       <p-button 
