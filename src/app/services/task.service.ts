@@ -14,6 +14,7 @@ export interface Task {
   duration?: number; // em minutos
   timeRemaining?: number; // em segundos
   accumulatedElapsed?: number; // em segundos - total já decorrido salvo no backend
+  spent?: boolean; // marca se a task já foi usada como moeda
   isRunning?: boolean;
   isPaused?: boolean;
   timerStartedAt?: string; // ISO string - quando o timer foi iniciado

@@ -1,11 +1,12 @@
 import { Component, signal, OnInit, inject } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { TooltipModule } from 'primeng/tooltip';
 import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     RouterOutlet,
     DrawerModule,
     ButtonModule,
@@ -24,6 +26,7 @@ import { AuthService } from '../services/auth.service';
 export class MainLayoutComponent implements OnInit {
   private document = inject(DOCUMENT);
   private authService = inject(AuthService);
+  private router = inject(Router);
   
   sidebarVisible = signal(false);
   isDarkTheme = false;
@@ -94,14 +97,32 @@ export class MainLayoutComponent implements OnInit {
       label: 'DASHBOARDS',
       items: [
         {
-          label: 'Banking',
+          label: 'Dashboard',
           icon: 'pi pi-credit-card',
-          routerLink: '/dashboard'
+          command: () => this.router.navigate(['/dashboard'])
         },
         {
           label: 'Tasks',
           icon: 'pi pi-clock',
-          routerLink: '/tasks'
+          command: () => this.router.navigate(['/tasks'])
+        }
+        ,
+        {
+          label: 'Eventos',
+          icon: 'pi pi-calendar',
+          command: () => this.router.navigate(['/events'])
+        }
+        ,
+        {
+          label: 'Timeline',
+          icon: 'pi pi-history',
+          command: () => this.router.navigate(['/timeline'])
+        }
+        ,
+        {
+          label: 'Loja',
+          icon: 'pi pi-shopping-cart',
+          command: () => this.router.navigate(['/shop'])
         }
       ]
     },
@@ -147,4 +168,6 @@ export class MainLayoutComponent implements OnInit {
       ]
     }
   ];
+
+  // (no debug hooks) 
 }

@@ -27,6 +27,25 @@ export const routes: Routes = [
         path: 'tasks',
         loadComponent: () => import('./features/tasks/tasks.component').then(c => c.TasksComponent)
       }
+      ,
+      {
+        path: 'shop',
+        loadComponent: () => import('./features/shop/shop.component').then(c => c.ShopComponent)
+      }
+      ,
+      {
+        path: 'events',
+        loadComponent: () => import('./features/events/events.component').then(c => c.EventsComponent)
+      }
+      ,
+      {
+        path: 'timeline',
+        loadComponent: () => import('./features/timeline/timeline-list.component').then(c => c.TimelineListComponent)
+      },
+      {
+        path: 'timeline/:area',
+        loadComponent: () => import('./features/timeline/timeline.component').then(c => c.TimelineComponent)
+      }
     ]
   }
 ];
