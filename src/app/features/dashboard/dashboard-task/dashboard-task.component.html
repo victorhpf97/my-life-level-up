@@ -2,6 +2,10 @@
   <ng-template pTemplate="header">
     <div class="flex flex-column sm:flex-row align-items-start sm:align-items-center justify-content-between px-3 sm:px-4 py-3 sm:py-4 border-bottom-1 surface-border gap-3 sm:gap-0">
       <h2 class="text-xl font-semibold m-0 text-900">Task List</h2>
+      <div class="flex align-items-center justify-content-center gap-3">
+        <p-datePicker [(ngModel)]="selectedDate" [showIcon]="true" dateFormat="dd/mm/yy"></p-datePicker>
+        <p-checkbox [(ngModel)]="allDates" [binary]="true" label="All dates" styleClass="ml-2"></p-checkbox>
+      </div>
       <p-button 
         label="Create Task" 
         icon="pi pi-plus" 
@@ -30,6 +34,22 @@
 
       <!-- Tasks Content -->
       <div *ngIf="!isLoading && tasks.length > 0">
+        <!-- Dashboard Progress -->
+        <div class="mb-6" *ngIf="filteredTasks().length > 0">
+          <div class="flex flex-column gap-3 mb-3">
+            <div class="flex align-items-center justify-content-between gap-3">
+              <div class="flex align-items-center gap-3 flex-1">
+                <div class="flex-1">
+                  <p-progressBar [value]="dashboardProgress" [style]="{'height': '6px'}" [showValue]="false"></p-progressBar>
+                  <div class="flex align-items-center justify-content-between mt-2">
+                    <div class="text-sm text-600">{{ completedTaskCount }} / {{ totalTaskCount }} completadas — {{ dashboardProgress }}%</div>
+                  </div>
+                </div>
+                <img src="assets/img/achievement.svg" alt="Achievement" style="height:40px; width:40px;" [style.filter]="isAllCompleted ? 'none' : 'grayscale(100%) brightness(0.6)'" [style.opacity]="isAllCompleted ? '1' : '0.6'">
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- ToDo Section -->
       <div class="mb-6">
         <h3 class="text-lg font-medium mb-4 text-600">ToDo</h3>
@@ -85,12 +105,12 @@
               
               <div class="flex flex-column flex-1">
                 <div class="flex align-items-center gap-2 mb-1">
-                  <!-- Priority Badge na frente do nome -->
-                  <p-tag 
-                    [value]="getPriorityLabel(task.priority)"
-                    [severity]="getPrioritySeverity(task.priority)"
-                    styleClass="text-xs">
-                  </p-tag>
+                  <!-- priority tag replaced by coin image -->
+                  <img 
+                    [src]="getTaskImageUrl(task)"
+                    alt="coin" 
+                    class="mr-2 hidden sm:block"
+                    style="width:28px;height:28px;object-fit:cover;border-radius:6px">
                   <span class="text-900 font-medium">{{ task.title }}</span>
                 </div>
                 <span class="text-600 text-sm">{{ task.description }}</span>
@@ -139,12 +159,7 @@
                 styleClass="p-button-rounded">
               </p-button>
               
-              <!-- Imagem da caixa no lugar do badge -->
-              <img 
-                [src]="getTaskImageUrl(task)" 
-                alt="Caixa" 
-                class="border-round hidden sm:block"
-                style="height: 45px; object-fit: cover;">
+       
 
               <!-- Menu Button - fixo no canto direito -->
               <p-button 
@@ -185,12 +200,12 @@
             </div>
 
             <div class="flex flex-row sm:flex-row align-items-center justify-content-between gap-2 sm:gap-3 w-full sm:w-auto">
-              <!-- Priority Badge - largura quase total no mobile -->
-              <p-tag 
-                [value]="getPriorityLabel(task.priority)"
-                [severity]="getPrioritySeverity(task.priority)"
-                styleClass="text-xs flex-1 sm:flex-none">
-              </p-tag>
+              <!-- priority tag replaced by coin image -->
+              <img 
+                [src]="getTaskImageUrl(task)" 
+                alt="coin" 
+                style="width:28px;height:28px;object-fit:cover;border-radius:6px"
+                class="flex-shrink-0">
 
               <!-- Menu Button - fixo no canto direito -->
               <p-button 

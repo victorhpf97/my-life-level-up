@@ -26,12 +26,13 @@
     </div>
   </div>
 
-  <!-- Drawer for Mobile -->
-  <p-drawer 
-    [(visible)]="sidebarVisible" 
+  <!-- Drawer for Mobile (render only when visible to avoid hidden overlays) -->
+  <p-drawer *ngIf="sidebarVisible()"
+    [visible]="true"
     position="left"
     [modal]="true"
-    styleClass="md:hidden sidebar-themed">
+    styleClass="md:hidden sidebar-themed"
+    (onHide)="sidebarVisible.set(false)">
     <ng-template pTemplate="header">
       <div class="flex align-items-center gap-2">
         <i class="pi pi-chart-line text-primary text-2xl"></i>
@@ -126,14 +127,9 @@
       </div>
     </div>
 
-    <!-- Main Content - Com margem para compensar sidebar fixa -->
-    <div class="main-content-with-sidebar">
+    <!-- Unified Main Content - aparece corretamente em desktop e mobile -->
+    <div class="main-content-with-sidebar mobile-content-with-header">
       <router-outlet></router-outlet>
     </div>
-  </div>
-
-  <!-- Mobile Content - Com padding-top para compensar header fixo -->
-  <div class="md:hidden mobile-content-with-header">
-    <router-outlet></router-outlet>
   </div>
 </div>

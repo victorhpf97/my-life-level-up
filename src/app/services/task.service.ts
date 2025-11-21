@@ -22,6 +22,7 @@ export interface Task {
   createdAt: string; // ISO string
   modifiedAt?: string; // ISO string
   completedAt?: string; // ISO string
+  taskDate?: string; // ISO string - date associated with the task (for filtering)
 }
 
 @Injectable({

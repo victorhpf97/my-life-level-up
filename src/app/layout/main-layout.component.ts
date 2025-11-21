@@ -99,30 +99,30 @@ export class MainLayoutComponent implements OnInit {
         {
           label: 'Dashboard',
           icon: 'pi pi-credit-card',
-          command: () => this.router.navigate(['/dashboard'])
+          routerLink: '/dashboard'
         },
         {
           label: 'Tasks',
           icon: 'pi pi-clock',
-          command: () => this.router.navigate(['/tasks'])
+          routerLink: '/tasks'
         }
         ,
         {
           label: 'Eventos',
           icon: 'pi pi-calendar',
-          command: () => this.router.navigate(['/events'])
+          routerLink: '/events'
         }
         ,
         {
           label: 'Timeline',
           icon: 'pi pi-history',
-          command: () => this.router.navigate(['/timeline'])
+          routerLink: '/timeline'
         }
         ,
         {
           label: 'Loja',
           icon: 'pi pi-shopping-cart',
-          command: () => this.router.navigate(['/shop'])
+          routerLink: '/shop'
         }
       ]
     },

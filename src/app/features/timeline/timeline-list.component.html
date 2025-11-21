@@ -15,7 +15,7 @@
           <div class="p-3">
             <div class="text-sm text-600 mb-3">{{ a.subtitle }}</div>
             <div class="flex justify-content-end">
-              <button pButton type="button" label="Abrir" class="p-button-text" (click)="open(a)"></button>
+              <button pButton type="button" label="Abrir" class="p-button-text" (click)="$event.stopPropagation(); open(a)"></button>
             </div>
           </div>
 

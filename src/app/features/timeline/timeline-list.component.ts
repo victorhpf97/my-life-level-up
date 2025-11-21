@@ -46,6 +46,6 @@ export class TimelineListComponent {
   constructor(private router: Router) {}
 
   open(area: AreaCard) {
-    this.router.navigate(['/timeline', area.slug]);
+    this.router.navigateByUrl(`/timeline/${area.slug}`);
   }
 }

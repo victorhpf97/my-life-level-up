@@ -35,6 +35,18 @@
       </textarea>
     </div>
 
+    <!-- Task Date -->
+    <div class="flex flex-column gap-2">
+      <label class="font-medium text-900">Task Date</label>
+      <p-datePicker [(ngModel)]="editTaskDate" dateFormat="dd/mm/yy" [showIcon]="true" styleClass="w-full"></p-datePicker>
+    </div>
+
+    <!-- Completed Checkbox -->
+    <div class="flex align-items-center gap-2">
+      <p-checkbox [binary]="true" [(ngModel)]="editCompleted"></p-checkbox>
+      <label class="m-0">Completed</label>
+    </div>
+
     <!-- Priority -->
     <div class="flex flex-column gap-2">
       <label class="font-medium text-900">Priority</label>

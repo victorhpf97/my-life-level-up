@@ -1,21 +1,29 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { map, take } from 'rxjs/operators';
+import { Auth } from '@angular/fire/auth';
 
+// Wait for Firebase auth to resolve the current user using onAuthStateChanged.
+// This avoids a race where the observable may emit null before persisted auth is restored,
+// which would incorrectly block navigation when the user is actually signed in.
 export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
   const router = inject(Router);
+  const auth = inject(Auth);
 
-  return authService.user$.pipe(
-    take(1),
-    map(user => {
+  return new Promise<boolean>((resolve) => {
+    const unsub = auth.onAuthStateChanged(user => {
       if (user) {
-        return true;
+        resolve(true);
       } else {
         router.navigate(['/login']);
-        return false;
+        resolve(false);
       }
-    })
-  );
+      // unsubscribe once we have a value
+      try { unsub(); } catch (e) { /* ignore */ }
+    }, () => {
+      // on error, block navigation
+      router.navigate(['/login']);
+      resolve(false);
+      try { unsub(); } catch (e) { /* ignore */ }
+    });
+  });
 };

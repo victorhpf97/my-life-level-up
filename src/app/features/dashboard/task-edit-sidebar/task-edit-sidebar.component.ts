@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -29,6 +31,8 @@ interface TaskTypeOption {
     DrawerModule,
     ButtonModule,
     InputTextModule,
+    CheckboxModule,
+    DatePickerModule,
     SelectModule,
     RadioButtonModule,
     InputNumberModule,
@@ -47,9 +51,11 @@ export class TaskEditSidebarComponent {
   // Dados editáveis
   editTitle: string = '';
   editDescription: string = '';
+  editCompleted: boolean = false;
   editPriority: 'low' | 'medium' | 'high' = 'low';
   editType: 'checkbox' | 'timer' = 'checkbox';
   editDuration: number = 15; // em minutos, padrão 15min
+  editTaskDate: Date | null = null;
 
   priorityOptions: PriorityOption[] = [
     { label: 'Low Priority', value: 'low', severity: 'success' },
@@ -66,6 +72,8 @@ export class TaskEditSidebarComponent {
     if (this.task) {
       this.editTitle = this.task.title;
       this.editDescription = this.task.description;
+      this.editCompleted = !!this.task.completed;
+      this.editTaskDate = this.task.taskDate ? new Date(this.task.taskDate) : new Date();
       this.editPriority = this.task.priority;
       this.editType = this.task.type;
       this.editDuration = this.task.duration || 15;
@@ -84,8 +92,9 @@ export class TaskEditSidebarComponent {
         description: this.editDescription.trim(),
         priority: this.editPriority,
         type: this.editType,
-        completed: this.task?.completed || false,
+        completed: this.editCompleted,
         createdAt: this.task?.createdAt || new Date().toISOString(),
+        taskDate: this.editTaskDate ? this.editTaskDate.toISOString() : undefined,
         // Configurar campos específicos do timer
         duration: this.editType === 'timer' ? this.editDuration : undefined,
         timeRemaining: this.editType === 'timer' ? this.editDuration * 60 : undefined,
@@ -106,6 +115,7 @@ export class TaskEditSidebarComponent {
     if (this.task) {
       this.editTitle = this.task.title;
       this.editDescription = this.task.description;
+      this.editCompleted = !!this.task.completed;
       this.editPriority = this.task.priority;
       this.editType = this.task.type;
       this.editDuration = this.task.duration || 15;

@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
+import { DatePickerModule } from 'primeng/datepicker';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
@@ -23,6 +24,7 @@ import { environment } from '../../../../environments/environment';
     CheckboxModule,
     FormsModule,
     TagModule,
+    DatePickerModule,
     ProgressBarModule,
     ProgressSpinnerModule,
     TooltipModule,
@@ -36,6 +38,10 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
   isLoading: boolean = true;
   private tasksSubscription?: Subscription;
+
+  // Date filter state
+  selectedDate: Date = new Date();
+  allDates: boolean = false;
 
   constructor(private taskService: TaskService, private cdr: ChangeDetectorRef) {}
 
@@ -77,6 +83,7 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
     
     this.tasksSubscription = this.taskService.getTasks().subscribe(tasks => {
       console.error('Tasks carregadas:', tasks);
+      // assign tasks directly; template will use getTaskImageUrl(task)
       this.tasks = tasks;
       this.isLoading = false;
       
@@ -101,11 +108,47 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
   }
 
   get todoTasks(): Task[] {
-    return this.tasks.filter(task => !task.completed);
+    return this.filteredTasks().filter(task => !task.completed);
   }
 
   get completedTasks(): Task[] {
-    return this.tasks.filter(task => task.completed);
+    return this.filteredTasks().filter(task => task.completed);
+  }
+
+  // Return tasks filtered by selectedDate unless allDates is true
+  filteredTasks(): Task[] {
+    if (this.allDates) return this.tasks.slice();
+
+    const target = this.selectedDate;
+    const y = target.getFullYear();
+    const m = target.getMonth();
+    const d = target.getDate();
+
+    return this.tasks.filter(t => {
+      // If task has a taskDate, compare by local date
+      if (!t.taskDate) return false;
+      const td = new Date(t.taskDate);
+      return td.getFullYear() === y && td.getMonth() === m && td.getDate() === d;
+    });
+  }
+
+  get totalTaskCount(): number {
+    return this.filteredTasks().length;
+  }
+
+  get completedTaskCount(): number {
+    return this.filteredTasks().filter(task => task.completed).length;
+  }
+
+  get dashboardProgress(): number {
+    const total = this.totalTaskCount;
+    if (!total) return 0;
+    return Math.round((this.completedTaskCount / total) * 100);
+  }
+
+  get isAllCompleted(): boolean {
+    const total = this.totalTaskCount;
+    return total > 0 && this.completedTaskCount === total;
   }
 
   async toggleTaskCompletion(task: Task): Promise<void> {
@@ -158,6 +201,8 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
       console.error('Erro ao criar task:', error);
     }
   }
+
+ 
 
   openCreateTaskSidebar(): void {
     this.selectedTask = {
@@ -396,7 +441,8 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
           title: updatedTask.title,
           description: updatedTask.description,
           priority: updatedTask.priority,
-          type: updatedTask.type
+          type: updatedTask.type,
+          completed: updatedTask.completed
         };
         
         // Se é timer task, incluir campos específicos
@@ -407,6 +453,10 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
           updateData.isRunning = false;
           updateData.isPaused = false;
         }
+        // include taskDate if provided
+        if (updatedTask.taskDate) {
+          updateData.taskDate = updatedTask.taskDate;
+        }
         
         await this.taskService.updateTask(updatedTask.id, updateData);
       } else {
@@ -415,6 +465,7 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
           title: updatedTask.title,
           description: updatedTask.description,
           priority: updatedTask.priority,
+          taskDate: updatedTask.taskDate,
           completed: false,
           type: updatedTask.type || 'checkbox'
         };
@@ -483,6 +534,8 @@ export class DashboardTaskComponent implements OnInit, OnDestroy {
 
   // Método para obter a imagem baseada na prioridade
   getTaskImageUrl(task: Task): string {
-    return task.priority === 'high' ? 'assets/img/aku aku.png' : 'assets/img/box.png';
+    if (task.priority === 'high') return 'assets/img/golden-coin.png';
+    if (task.priority === 'medium') return 'assets/img/silver-coin.png';
+    return 'assets/img/bronze-coin.png';
   }
 }
